@@ -7,8 +7,10 @@ set nocompatible
 call plug#begin('~/.vim/plugged')
 
 Plug 'ciaranm/detectindent'
-Plug 'junegunn/fzf',                        { 'do': 'yes \| ./install' }
+Plug '~/.fzf'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
 Plug 'mhinz/vim-signify'
 Plug 'moll/vim-bbye'
 Plug 'scrooloose/nerdtree',                 "{ 'on': ['NERDTreeFind', 'NERDTreeToggle'] }
@@ -24,16 +26,16 @@ Plug 'majutsushi/tagbar',                   { 'on': 'TagbarToggle' }
 
 Plug 'vim-scripts/doxygentoolkit.vim',      { 'for': 'cpp' }
 Plug 'octol/vim-cpp-enhanced-highlight',    { 'for': 'cpp' }
-Plug 'twinside/vim-hoogle',                 { 'for': 'haskell' }
-Plug 'eagletmt/ghcmod-vim',                 { 'for': 'haskell' }
-Plug 'eagletmt/neco-ghc',                   { 'for': 'haskell' }
-Plug 'mpickering/hlint-refactor-vim',       { 'for': 'haskell' }
+"Plug 'twinside/vim-hoogle',                 { 'for': 'haskell' }
+"Plug 'eagletmt/ghcmod-vim',                 { 'for': 'haskell' }
+"Plug 'eagletmt/neco-ghc',                   { 'for': 'haskell' }
+"Plug 'mpickering/hlint-refactor-vim',       { 'for': 'haskell' }
 "Plug 'fatih/vim-go',                        "{ 'for': 'go', 'do': ':GoInstallBinaries' }
 Plug 'jdevlieghere/llvm.vim',               { 'for': 'llvm' }
-Plug 'racer-rust/vim-racer',                { 'for': 'rust' }
-Plug 'rust-lang/rust.vim',                  { 'for': 'rust' }
-"Plug 'ctrlpvim/ctrlp.vim' " Super Searching
-"Plug 'brookhong/cscope.vim'
+"Plug 'racer-rust/vim-racer',                { 'for': 'rust' }
+"Plug 'rust-lang/rust.vim',                  { 'for': 'rust' }
+Plug 'ctrlpvim/ctrlp.vim' " Super Searching
+Plug 'brookhong/cscope.vim'
 
 Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 
@@ -46,7 +48,7 @@ Plug 'morhetz/gruvbox'
 
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 
-Plug 'https://github.com/pboettch/vim-cmake-syntax'
+Plug 'pboettch/vim-cmake-syntax'
 
 if has("python")
     Plug 'valloric/youcompleteme', { 'do': './install.py --clang-completer'}    " --gocode-completer --racer-completer' }
@@ -74,7 +76,7 @@ if !exists("g:syntax_on")
 endif
 
 set autoread                    " Auto reload file after external command
-set background=dark             " Use a dark background
+"set background=dark             " Use a dark background
 set backspace=indent,eol,start  " Delete over line breaks
 set binary                      " Enable binary support
 set colorcolumn=80,120          " Show ruler columns
@@ -186,6 +188,7 @@ endif
 if has("gui_running")
     set guifont=Source\ Code\ Pro\ Light:h12
     set antialias
+    colorscheme yaflandia
 end
 
 " Same color for sign column and line numbers
@@ -300,6 +303,56 @@ nnoremap <leader>a :Ag<SPACE>
 vnoremap <leader>a y :Ag <C-R>"<CR>
 nnoremap <silent> <C-f> :Files<CR>
 nnoremap <silent> <C-b> :Buffers<CR>
+" Global options
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~40%' }
+
+" In Neovim, you can set up fzf window using a Vim command
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_layout = { 'window': '-tabnew' }
+let g:fzf_layout = { 'window': '10split enew' }
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.vim/fzf-history'
+
+"Command-local options
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
+
+" [[B]Commits] Customize the options used by 'git log':
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
+
+" [Commands] --expect expression for directly executing the command
+let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 
 " vim-airline
 let g:airline_powerline_fonts=1
@@ -370,3 +423,42 @@ let g:ycm_python_binary_path = 'python3'
 "let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
+" Vim Session
+" Save session on quitting Vim
+"autocmd VimLeave * NERDTreeClose
+"autocmd VimLeave * mksession! [filename]
+
+" Restore session on starting Vim
+"autocmd VimEnter * call MySessionRestoreFunction()
+"autocmd VimEnter * NERDTree
+"
+" function! MakeSession(overwrite)
+"   let b:sessiondir = $HOME . "/.vim/sessions" . getcwd()
+"   if (filewritable(b:sessiondir) != 2)
+"     exe 'silent !mkdir -p ' b:sessiondir
+"     redraw!
+"   endif
+"   let b:filename = b:sessiondir . '/session.vim'
+"   if a:overwrite == 0 && !empty(glob(b:filename))
+"     return
+"   endif
+"   exe "mksession! " . b:filename
+" endfunction
+
+" function! LoadSession()
+"   let b:sessiondir = $HOME . "/.vim/sessions" . getcwd()
+"   let b:sessionfile = b:sessiondir . "/session.vim"
+"   if (filereadable(b:sessionfile))
+"     exe 'source ' b:sessionfile
+"   else
+"     echo "No session loaded."
+"   endif
+" endfunction
+
+" " Adding automatons for when entering or leaving Vim
+" if(argc() == 0)
+"   au VimEnter * nested :call LoadSession()
+"   au VimLeave * :call MakeSession(1)
+" else
+"   au VimLeave * :call MakeSession(0)
+" endif
