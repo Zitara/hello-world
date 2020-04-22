@@ -1,75 +1,6 @@
 set nocompatible
 
-" ---------------------------------------------------------------------------- "
-" Plugins                                                                      "
-" ---------------------------------------------------------------------------- "
-
-call plug#begin('~/.vim/plugged')
-
-Plug 'ciaranm/detectindent'
-Plug '~/.fzf'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
-Plug 'mhinz/vim-signify'
-Plug 'moll/vim-bbye'
-Plug 'scrooloose/nerdtree',                 "{ 'on': ['NERDTreeFind', 'NERDTreeToggle'] }
-Plug 'shougo/vimproc',                      { 'do': 'make' }
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-Plug 'chiel92/vim-autoformat',              { 'on': 'Autoformat' }
-Plug 'majutsushi/tagbar',                   { 'on': 'TagbarToggle' }
-
-Plug 'vim-scripts/doxygentoolkit.vim',      { 'for': 'cpp' }
-Plug 'octol/vim-cpp-enhanced-highlight',    { 'for': 'cpp' }
-"Plug 'twinside/vim-hoogle',                 { 'for': 'haskell' }
-"Plug 'eagletmt/ghcmod-vim',                 { 'for': 'haskell' }
-"Plug 'eagletmt/neco-ghc',                   { 'for': 'haskell' }
-"Plug 'mpickering/hlint-refactor-vim',       { 'for': 'haskell' }
-"Plug 'fatih/vim-go',                        "{ 'for': 'go', 'do': ':GoInstallBinaries' }
-Plug 'jdevlieghere/llvm.vim',               { 'for': 'llvm' }
-"Plug 'racer-rust/vim-racer',                { 'for': 'rust' }
-"Plug 'rust-lang/rust.vim',                  { 'for': 'rust' }
-Plug 'ctrlpvim/ctrlp.vim' " Super Searching
-Plug 'brookhong/cscope.vim'
-
-Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-
-Plug 'altercation/vim-colors-solarized'
-Plug 'joshdick/onedark.vim'
-Plug 'JBakamovic/yaflandia'
-Plug 'jordwalke/flatlandia'
-Plug 'thinkpixellab/flatland'
-Plug 'morhetz/gruvbox'
-
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
-
-Plug 'pboettch/vim-cmake-syntax'
-
-if has("python")
-    Plug 'valloric/youcompleteme', { 'do': './install.py --clang-completer'}    " --gocode-completer --racer-completer' }
-else
-    Plug 'ajh17/vimcompletesme'
-endif
-
-call plug#end()
-
-" ---------------------------------------------------------------------------- "
-" General Settings                                                             "
-" ---------------------------------------------------------------------------- "
-
 filetype plugin indent on
-
-try
-    "colorscheme solarized
-    colorscheme onedark
-catch
-endtry
-call togglebg#map("<F5>")       " Toggle dark or light background
 
 if !exists("g:syntax_on")
     syntax enable
@@ -85,7 +16,7 @@ set hidden                      " Hide buffers instead of closing them
 set laststatus=2                " Always display the status line
 set nofoldenable                " Disable folding
 set lazyredraw                  " Use lazy redrawing
-set noshowmode                  " Don't show mode
+"set noshowmode                  " Don't show mode
 set number                      " Show line numbers
 set pastetoggle=<F2>            " Toggle paste mode with F2
 set ruler                       " Show ruler
@@ -126,7 +57,7 @@ set ttimeoutlen=0               " Disable key code delay
 
 " Wrapping
 set wrap                      " Don't wrap long lines
-set linebreak                   " When wrapping, only at certain characters
+"set linebreak                   " When wrapping, only at certain characters
 set textwidth=80                 " Turn off physical line wrapping
 set wrapmargin=80                " Turn off physical line wrapping
 set nolist                      " For "soft" wrapping
@@ -160,17 +91,14 @@ set spelllang=en_us             " English as default language
 set spell                       " Enable by default
 
 " Invisible characters
-set nolist
-set listchars=eol:¬,tab:▶\ ,trail:~,extends:⟩,precedes:⟨,nbsp:␣
+set list
+"set listchars=eol:¬,tab:▶\ ,trail:~,extends:⟩,precedes:⟨,nbsp:␣
+set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:»
+
 set showbreak=↳\ \ \ "
 
 " Make completion menu behave like an IDE
 set completeopt=longest,menuone
-
-" Encryption
-if has("crypt-blowfish2")
-    set cm=blowfish2
-endif
 
 " History
 set history=1000                " Remember more commands
@@ -181,45 +109,15 @@ if has('persistent_undo')
     set undoreload=10000        " Max lines to save for undo on a buffer reload
 endif
 
-" ---------------------------------------------------------------------------- "
-" Colors & User Interface                                                      "
-" ---------------------------------------------------------------------------- "
-
-if has("gui_running")
-    set guifont=Source\ Code\ Pro\ Light:h12
-    set antialias
-    colorscheme yaflandia
-end
-
 " Same color for sign column and line numbers
-highlight clear SignColumn
+"highlight clear SignColumn
 
 " Custom spell-checking highlighting
-highlight SpellBad     term=underline cterm=underline
-highlight SpellCap     term=underline cterm=underline
-highlight SpellRare    term=underline cterm=underline
-highlight SpellLocal   term=underline cterm=underline
+highlight SpellBad     term=underline cterm=underline,bold ctermfg=NONE ctermbg=NONE
+highlight SpellCap     term=underline cterm=underline,bold ctermfg=NONE ctermbg=NONE
+highlight SpellRare    term=underline cterm=underline,bold ctermfg=NONE ctermbg=NONE
+highlight SpellLocal   term=underline cterm=underline,bold ctermfg=NONE ctermbg=NONE
 
-" ---------------------------------------------------------------------------- "
-" Key Mappings                                                                 "
-" ---------------------------------------------------------------------------- "
-
-" Typos
-cnoreabbrev W w
-cnoreabbrev Q q
-cnoreabbrev Qa qa
-
-" Save file which you forgot to open with sudo
-cnoremap w!! w !sudo tee % >/dev/null
-
-" Wrap the current visual selection
-vnoremap Q gq
-
-" Wrap the current paragraph
-nnoremap Q gqap
-
-" Search for current visual selection
-vnoremap // y/\V<C-R>"<CR>
 
 " Move between open buffers.
 nnoremap <C-n> :bnext<CR>
@@ -237,31 +135,6 @@ set foldlevel=99
 " Enable folding with the spacebar
 nnoremap <space> za
 
-" ---------------------------------------------------------------------------- "
-" Leader Mappings                                                              "
-" ---------------------------------------------------------------------------- "
-
-" Clear search highlight
-nnoremap <leader><space> :noh<CR>
-
-" Yank
-nnoremap <leader>yf :let @+=expand("%:p")<CR>
-nnoremap <leader>yl :let @+=expand('%:t') . ':' . line(".")<CR>
-
-" Toggle
-nnoremap <leader>ts :setlocal spell!<CR>
-nnoremap <leader>tl :set list!<CR>
-
-" Buffers
-nnoremap <leader>bd :bdelete<CR>
-nnoremap <leader>bf :bfirst<CR>
-nnoremap <leader>bl :blast<CR>
-nnoremap <leader>bn :bnext<CR>
-nnoremap <leader>bp :bprevious<CR>
-
-" Windows
-nnoremap <leader>wd <C-w>c
-nnoremap <leader>wo <C-w>o
 
 " ---------------------------------------------------------------------------- "
 " Auto Commands                                                                "
@@ -286,179 +159,3 @@ augroup reload_vimrc
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup end
 
-" ---------------------------------------------------------------------------- "
-" Plugin Configuration                                                         "
-" ---------------------------------------------------------------------------- "
-
-" vim-bbye
-nnoremap <silent> <leader>bd :Bdelete!<CR>
-
-" vim-signify
-let g:signify_vcs_list=['git']
-let g:signify_update_on_bufenter=0
-
-" fzf.vim
-let g:fzf_buffers_jump=1
-nnoremap <leader>a :Ag<SPACE>
-vnoremap <leader>a y :Ag <C-R>"<CR>
-nnoremap <silent> <C-f> :Files<CR>
-nnoremap <silent> <C-b> :Buffers<CR>
-" Global options
-" This is the default extra key bindings
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-" Default fzf layout
-" - down / up / left / right
-let g:fzf_layout = { 'down': '~40%' }
-
-" In Neovim, you can set up fzf window using a Vim command
-let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_layout = { 'window': '-tabnew' }
-let g:fzf_layout = { 'window': '10split enew' }
-
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-
-" Enable per-command history.
-" CTRL-N and CTRL-P will be automatically bound to next-history and
-" previous-history instead of down and up. If you don't like the change,
-" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-let g:fzf_history_dir = '~/.vim/fzf-history'
-
-"Command-local options
-" [Buffers] Jump to the existing window if possible
-let g:fzf_buffers_jump = 1
-
-" [[B]Commits] Customize the options used by 'git log':
-let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-
-" [Tags] Command to generate tags file
-let g:fzf_tags_command = 'ctags -R'
-
-" [Commands] --expect expression for directly executing the command
-let g:fzf_commands_expect = 'alt-enter,ctrl-x'
-
-" vim-airline
-let g:airline_powerline_fonts=1
-let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tabline#fnamemod=':t'
-
-" detectindent
-let g:detectindent_preferred_expandtab=1
-let g:detectindent_preferred_indent=2
-
-augroup detect_indent
-    autocmd!
-    autocmd BufReadPost * :DetectIndent
-augroup end
-
-" nerdtree
-let g:NERDTreeIgnore=['\.job$', '^CVS$', '\.orig', '\~$']
-let g:NERDTreeMinimalUI=1
-let g:NERDTreeShowHidden=1
-let g:NERDTreeWinPos="left"
-let g:NERDTreeWinSize=35
-
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-"autocmd vimenter * NERDTree
-"map <C-n> :NERDTreeToggle<CR>
-
-nnoremap <leader>n :NERDTreeFind<CR>
-nnoremap <leader>tn :NERDTreeToggle<CR>
-
-augroup close_nerdtree
-    autocmd!
-    autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup end
-
-" tagbar
-"let g:tagbar_autofocus=0
-"let g:tagbar_compact=1
-"let g:tagbar_right=1
-"let g:tagbar_width=35
-"let g:tagbar_show_linenumbers = 1
-nnoremap <leader>tt :TagbarToggle<CR>
-"autocmd VimEnter * nested :TagbarOpen
-"autocmd VimEnter * nested :call tagbar#autoopen(1)
-
-" vim-autoformat
-let g:formatters_python=['yapf', 'autopep8']
-let g:formatter_yapf_style='pep8'
-
-" doxygentoolkit.vim
-let g:DoxygenToolkit_commentType="C++"
-
-" youcompleteme
-let g:ycm_extra_conf_globlist=['~/.vim/*']
-let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_error_symbol='✗'
-let g:ycm_warning_symbol='▲'
-"let g:ycm_server_python_interpreter= '/usr/bin/python'
-"let g:ycm_python_binary_path = '/usr/bin/python'
-let g:ycm_python_binary_path = 'python3'
-"let g:ycm_server_use_vim_stdout = 1
-"let g:ycm_server_log_level = 'debug'
-"let g:ycm_confirm_extra_conf = 1
-"let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
-" Vim Session
-" Save session on quitting Vim
-"autocmd VimLeave * NERDTreeClose
-"autocmd VimLeave * mksession! [filename]
-
-" Restore session on starting Vim
-"autocmd VimEnter * call MySessionRestoreFunction()
-"autocmd VimEnter * NERDTree
-"
-" function! MakeSession(overwrite)
-"   let b:sessiondir = $HOME . "/.vim/sessions" . getcwd()
-"   if (filewritable(b:sessiondir) != 2)
-"     exe 'silent !mkdir -p ' b:sessiondir
-"     redraw!
-"   endif
-"   let b:filename = b:sessiondir . '/session.vim'
-"   if a:overwrite == 0 && !empty(glob(b:filename))
-"     return
-"   endif
-"   exe "mksession! " . b:filename
-" endfunction
-
-" function! LoadSession()
-"   let b:sessiondir = $HOME . "/.vim/sessions" . getcwd()
-"   let b:sessionfile = b:sessiondir . "/session.vim"
-"   if (filereadable(b:sessionfile))
-"     exe 'source ' b:sessionfile
-"   else
-"     echo "No session loaded."
-"   endif
-" endfunction
-
-" " Adding automatons for when entering or leaving Vim
-" if(argc() == 0)
-"   au VimEnter * nested :call LoadSession()
-"   au VimLeave * :call MakeSession(1)
-" else
-"   au VimLeave * :call MakeSession(0)
-" endif
